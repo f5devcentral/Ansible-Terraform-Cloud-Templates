@@ -1,22 +1,13 @@
 ---
-- name: Set BIG-IP admin password
+- name: Set BIG-IP admin password and enable iApps LX in GUI
   bigip_command:
     provider:
       server: "{{ inventory_hostname }}"
       ssh_keyfile: "{{ SSH_KEY_PATH }}"
       transport: cli
       user: admin
-    commands: modify auth user admin password {{ ADMIN_PASSWORD }}
-    validate_certs: no
-  delegate_to: localhost
-
-- name: enable iApps LX Package management in UI
-  bigip_command:
-    provider:
-      server: "{{ inventory_hostname }}"
-      ssh_keyfile: "{{ SSH_KEY_PATH }}"
-      transport: cli
-      user: admin
-    commands: run /util bash -c "touch /var/config/rest/iapps/enable"
-    validate_certs: no
+      validate_certs: no
+    commands: 
+      - modify auth user admin password {{ ADMIN_PASSWORD }}
+      - run /util bash -c "touch /var/config/rest/iapps/enable"
   delegate_to: localhost
